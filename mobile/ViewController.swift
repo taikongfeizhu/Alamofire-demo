@@ -10,18 +10,26 @@ import UIKit
 import SwiftyJSON
 import Alamofire
 
+
 class ViewController: UIViewController {
+    
+    @IBOutlet var tv:UITextView!
+    
+    @IBAction func btnPressed(sender:AnyObject){
+        self.tv.text="数据请求中...."
+        webRequest()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        webRequest()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     func jsonFromNetworking(){
         let strURL = "http://127.0.0.1:3002/network.json"
@@ -52,11 +60,9 @@ class ViewController: UIViewController {
             print("response:", response.response!) // HTTP URL response
             print("data:", response.data!)     // server data
             print("result:", response.result)   // result of respon`se serialization
-            
             let result = JSON(response.result.value!)
-            
             print(">>>", result["url"].string!)
-            
+            self.tv.text = "url: \(result["url"])\nua: \(result["headers"]["User-Agent"])\norigin: \(result["origin"])"
         }
     }
     
